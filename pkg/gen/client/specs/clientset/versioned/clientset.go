@@ -17,7 +17,7 @@ limitations under the License.
 package versioned
 
 import (
-	specsv1alpha1 "github.com/deislabs/smi-sdk-go/pkg/gen/client/specs/clientset/versioned/typed/specs/v1alpha1"
+	specsv1alpha2 "github.com/deislabs/smi-sdk-go/pkg/gen/client/specs/clientset/versioned/typed/specs/v1alpha2"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
@@ -25,27 +25,19 @@ import (
 
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
-	SpecsV1alpha1() specsv1alpha1.SpecsV1alpha1Interface
-	// Deprecated: please explicitly pick a version if possible.
-	Specs() specsv1alpha1.SpecsV1alpha1Interface
+	SpecsV1alpha2() specsv1alpha2.SpecsV1alpha2Interface
 }
 
 // Clientset contains the clients for groups. Each group has exactly one
 // version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	specsV1alpha1 *specsv1alpha1.SpecsV1alpha1Client
+	specsV1alpha2 *specsv1alpha2.SpecsV1alpha2Client
 }
 
-// SpecsV1alpha1 retrieves the SpecsV1alpha1Client
-func (c *Clientset) SpecsV1alpha1() specsv1alpha1.SpecsV1alpha1Interface {
-	return c.specsV1alpha1
-}
-
-// Deprecated: Specs retrieves the default version of SpecsClient.
-// Please explicitly pick a version.
-func (c *Clientset) Specs() specsv1alpha1.SpecsV1alpha1Interface {
-	return c.specsV1alpha1
+// SpecsV1alpha2 retrieves the SpecsV1alpha2Client
+func (c *Clientset) SpecsV1alpha2() specsv1alpha2.SpecsV1alpha2Interface {
+	return c.specsV1alpha2
 }
 
 // Discovery retrieves the DiscoveryClient
@@ -64,7 +56,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	}
 	var cs Clientset
 	var err error
-	cs.specsV1alpha1, err = specsv1alpha1.NewForConfig(&configShallowCopy)
+	cs.specsV1alpha2, err = specsv1alpha2.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +72,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 // panics if there is an error in the config.
 func NewForConfigOrDie(c *rest.Config) *Clientset {
 	var cs Clientset
-	cs.specsV1alpha1 = specsv1alpha1.NewForConfigOrDie(c)
+	cs.specsV1alpha2 = specsv1alpha2.NewForConfigOrDie(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClientForConfigOrDie(c)
 	return &cs
@@ -89,7 +81,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
-	cs.specsV1alpha1 = specsv1alpha1.New(c)
+	cs.specsV1alpha2 = specsv1alpha2.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
 	return &cs

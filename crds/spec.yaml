@@ -4,8 +4,8 @@ kind: CustomResourceDefinition
 metadata:  
   name: httproutegroups.spec.smi-spec.io
 spec:  
-  group: spec.smi-spec.io
-  version: v1alpha1
+  group: specs.smi-spec.io
+  version: v1alpha2
   scope: Namespaced 
   names:    
     kind: HTTPRouteGroup
@@ -20,8 +20,8 @@ kind: CustomResourceDefinition
 metadata:  
   name: tcproutes.spec.smi-spec.io
 spec:  
-  group: spec.smi-spec.io
-  version: v1alpha1
+  group: specs.smi-spec.io
+  version: v1alpha2
   scope: Namespaced 
   names:    
     kind: TCPRoute

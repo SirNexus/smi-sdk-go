@@ -18,8 +18,8 @@ package fake
 
 import (
 	clientset "github.com/deislabs/smi-sdk-go/pkg/gen/client/specs/clientset/versioned"
-	specsv1alpha1 "github.com/deislabs/smi-sdk-go/pkg/gen/client/specs/clientset/versioned/typed/specs/v1alpha1"
-	fakespecsv1alpha1 "github.com/deislabs/smi-sdk-go/pkg/gen/client/specs/clientset/versioned/typed/specs/v1alpha1/fake"
+	specsv1alpha2 "github.com/deislabs/smi-sdk-go/pkg/gen/client/specs/clientset/versioned/typed/specs/v1alpha2"
+	fakespecsv1alpha2 "github.com/deislabs/smi-sdk-go/pkg/gen/client/specs/clientset/versioned/typed/specs/v1alpha2/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -39,7 +39,7 @@ func NewSimpleClientset(objects ...runtime.Object) *Clientset {
 		}
 	}
 
-	cs := &Clientset{}
+	cs := &Clientset{tracker: o}
 	cs.discovery = &fakediscovery.FakeDiscovery{Fake: &cs.Fake}
 	cs.AddReactor("*", "*", testing.ObjectReaction(o))
 	cs.AddWatchReactor("*", func(action testing.Action) (handled bool, ret watch.Interface, err error) {
@@ -61,20 +61,20 @@ func NewSimpleClientset(objects ...runtime.Object) *Clientset {
 type Clientset struct {
 	testing.Fake
 	discovery *fakediscovery.FakeDiscovery
+	tracker   testing.ObjectTracker
 }
 
 func (c *Clientset) Discovery() discovery.DiscoveryInterface {
 	return c.discovery
 }
 
-var _ clientset.Interface = &Clientset{}
-
-// SpecsV1alpha1 retrieves the SpecsV1alpha1Client
-func (c *Clientset) SpecsV1alpha1() specsv1alpha1.SpecsV1alpha1Interface {
-	return &fakespecsv1alpha1.FakeSpecsV1alpha1{Fake: &c.Fake}
+func (c *Clientset) Tracker() testing.ObjectTracker {
+	return c.tracker
 }
 
-// Specs retrieves the SpecsV1alpha1Client
-func (c *Clientset) Specs() specsv1alpha1.SpecsV1alpha1Interface {
-	return &fakespecsv1alpha1.FakeSpecsV1alpha1{Fake: &c.Fake}
+var _ clientset.Interface = &Clientset{}
+
+// SpecsV1alpha2 retrieves the SpecsV1alpha2Client
+func (c *Clientset) SpecsV1alpha2() specsv1alpha2.SpecsV1alpha2Interface {
+	return &fakespecsv1alpha2.FakeSpecsV1alpha2{Fake: &c.Fake}
 }

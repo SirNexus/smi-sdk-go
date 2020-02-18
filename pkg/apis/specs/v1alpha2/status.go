@@ -1,4 +1,4 @@
-package v1alpha1
+package v1alpha2
 
 // Status of the resource
 type Status string

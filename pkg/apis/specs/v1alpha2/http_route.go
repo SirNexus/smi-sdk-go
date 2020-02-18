@@ -1,4 +1,4 @@
-package v1alpha1
+package v1alpha2
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -41,6 +41,9 @@ type HTTPMatch struct {
 
 	// PathRegex is a regular expression defining the route
 	PathRegex string `json:"pathRegex,omitempty" protobuf:"bytes,1,opt,name=pathRegex"`
+
+	// Headers is a map of key/value pairs which match HTTP headers
+	Headers map[string]string `json:"headers,omitempty" protobuf:"bytes,4,opt,name=headers"`
 }
 
 // HTTPRouteMethod are methods allowed by the route
