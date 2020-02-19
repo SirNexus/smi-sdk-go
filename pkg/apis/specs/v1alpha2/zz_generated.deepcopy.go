@@ -32,7 +32,7 @@ func (in *HTTPMatch) DeepCopyInto(out *HTTPMatch) {
 	}
 	if in.Headers != nil {
 		in, out := &in.Headers, &out.Headers
-		*out = make(header, len(*in))
+		*out = make(httpHeaders, len(*in))
 		for key, val := range *in {
 			(*out)[key] = val
 		}
