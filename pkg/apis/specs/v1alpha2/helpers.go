@@ -7,6 +7,7 @@ import (
 
 // UnmarshalJSON converts a given array of single value maps to one map
 func (h *httpHeaders) UnmarshalJSON(b []byte) error {
+	*h = make(map[string]string)
 	var temp []map[string]string
 	if err := json.Unmarshal(b, &temp); err != nil {
 		return err
@@ -17,7 +18,7 @@ func (h *httpHeaders) UnmarshalJSON(b []byte) error {
 			return errors.New("incorrect length of keyval")
 		}
 		for key, val := range m {
-			h[key] = val
+			(*h)[key] = val
 		}
 	}
 	return nil
