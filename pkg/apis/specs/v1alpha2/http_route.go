@@ -43,8 +43,11 @@ type HTTPMatch struct {
 	PathRegex string `json:"pathRegex,omitempty" protobuf:"bytes,1,opt,name=pathRegex"`
 
 	// Headers is a map of key/value pairs which match HTTP header name and value
-	Headers map[string]string `json:"headers,omitempty" protobuf:"bytes,4,opt,name=headers"`
+	Headers httpHeaders `json:"headers,omitempty" protobuf:"bytes,4,opt,name=headers"`
 }
+
+// ArrayHeaders a single key/value to match HTTP traffic
+type httpHeaders map[string]string
 
 // HTTPRouteMethod are methods allowed by the route
 type HTTPRouteMethod string
